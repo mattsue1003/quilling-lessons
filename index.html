@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <style>
-/* Layout: 頂端彩旗＋彩色標題；左邊切割墊舞台（捲紙示範／底稿＋零件盤）、右邊步驟卡；下方是基本功與 12 課作品牆 */
+/* Layout: 頂端彩旗＋彩色標題；左邊切割墊舞台（捲紙示範／底稿＋零件盤）、右邊步驟卡；下方是基本功與 21 課作品牆 */
 :root{
   --bg:#fff4e6;
   --dot:#ffdcc6;
@@ -197,11 +197,11 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     <div class="seal" aria-hidden="true">捲</div>
     <div class="brand">
       <h1 aria-label="衍紙・捲紙教案"><span>衍</span><span>紙</span><span class="dot">・</span><span>捲</span><span>紙</span><span>教</span><span>案</span></h1>
-      <p>10 種基本捲法＋12 個衍紙教案：捲起來、放開、捏出形狀、點膠固定，一步一步動畫示範。附實際大小的 A4 擺放底稿和零件清單，印出來就能照著貼。</p>
+      <p>10 種基本捲法＋21 個衍紙教案：捲起來、放開、捏出形狀、點膠固定，一步一步動畫示範。附實際大小的 A4 擺放底稿和零件清單，印出來就能照著貼。</p>
     </div>
     <div class="modes" role="tablist" aria-label="模式">
       <button role="tab" data-mode="basic" aria-selected="true">基本功</button>
-      <button role="tab" data-mode="lesson" aria-selected="false">12 個教案</button>
+      <button role="tab" data-mode="lesson" aria-selected="false">21 個教案</button>
       <button role="tab" data-mode="design" aria-selected="false">自己設計</button>
     </div>
   </header>
@@ -253,7 +253,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
         <div class="group a4box" id="a4Box">
           <span class="label">A4 底稿：實際大小擺放圖＋零件清單</span>
           <img id="a4img" alt="這一課的 A4 底稿預覽">
-          <div class="row"><button id="a4One">下載這課 A4（PDF）</button><button id="a4All">全部 12 課（PDF）</button></div>
+          <div class="row"><button id="a4One">下載這課 A4（PDF）</button><button id="a4All">全部 21 課（PDF）</button></div>
           <p class="note">列印時選「實際大小 100%」，底稿的正方形才會是 12 公分，零件才放得剛好。</p>
         </div>
         <button class="ghost" id="lRecord">錄下整課過程（影片，含字幕）</button>
@@ -309,7 +309,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
   </main>
 
   <section class="library" id="library">
-    <div class="libhead"><h2>基本功與 12 個教案</h2><button class="cta" id="a4All2">下載 12 課 A4 底稿（PDF）</button></div>
+    <div class="libhead"><h2>基本功與 21 個教案</h2><button class="cta" id="a4All2">下載 21 課 A4 底稿（PDF）</button></div>
   </section>
 
   <details class="notes">
@@ -341,9 +341,9 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
         <h3>由簡到難</h3>
         <ul>
           <li>基本功：先練緊捲、鬆捲、水滴形，再練需要兩次捏的方形和三角形。</li>
-          <li>★ 第 1–4 課：一兩種形狀、零件少。</li>
-          <li>★★ 第 5–8 課：形狀變多，開始有對稱和排列。</li>
-          <li>★★★ 第 9–12 課：零件 20 個以上、好幾種顏色和捲法。</li>
+          <li>★ 第 1–7 課：一兩種形狀、零件少。</li>
+          <li>★★ 第 8–14 課：形狀變多，開始有對稱和排列。</li>
+          <li>★★★ 第 15–21 課：零件多、好幾種顏色和捲法。</li>
         </ul>
       </div>
       <div>
@@ -586,7 +586,7 @@ function iconURL(k, col, px=96, bg=null){
   drawIcon(x, k, COLORS[col].h, px/2, px/2, px*.36); return c.toDataURL('image/png');
 }
 
-/* ---------- 12 個教案（座標單位：公釐，底稿 0–120） ---------- */
+/* ---------- 21 個教案（座標單位：公釐，底稿 0–120） ---------- */
 const P = (k,c,d,x,y,r,s) => ({k, c, d, x:+x.toFixed(2), y:+y.toFixed(2), r:+((r||0).toFixed(1)), s});
 const LN = (c, pts, s) => ({k:'line', c, pts:pts.map(v => +v.toFixed(2)), s});
 const aim = (x,y,tx,ty) => Math.atan2(ty-y, tx-x)/D2R + 90;
@@ -651,6 +651,44 @@ function fuCard(){
   [[84,36,45],[84,84,135],[36,84,-135],[36,36,-45]].forEach(([x,y,r]) => o.push(P('scroll','gold',14,x,y,r,'S 捲花邊')));
   return o;
 }
+
+function pack(cx, cy, rx, ry, step, f){ const o = []; const dy = step*.87;
+  for (let j=-6;j<=6;j++){ const y = cy + j*dy; for (let x = cx - 6*step + (j%2 ? step/2 : 0); x <= cx + 6*step; x += step) if (((x-cx)/rx)**2 + ((y-cy)/ry)**2 <= 1) o.push(f(x, y)); }
+  return o; }
+function goldfish(){
+  const o = [LN('green',[98,112,92,92,100,72],'水草'), LN('green',[106,112,113,94,106,80],'水草')];
+  for (const a of [-32, 32]) o.push(P('eye','orange',18, 68+Math.cos(a*D2R)*10.5, 58+Math.sin(a*D2R)*10.5, a+90, '尾巴'));
+  o.push(P('teardrop','orange',12,50,41,25,'魚鰭'), P('teardrop','orange',30,50,58,90,'身體'), P('tight','black',4,38,55,0,'眼睛'));
+  o.push(P('loose','white',7,32,42,0,'泡泡'), P('loose','white',7,27,31,0,'泡泡'), P('loose','white',7,31,20,0,'泡泡'));
+  return o; }
+function house(){
+  const o = [P('triangle','red',30,60,45.3,0,'屋頂')];
+  for (const [x,y] of [[51.5,63.5],[68.5,63.5],[51.5,80.5],[68.5,80.5]]) o.push(P('square','yellow',20,x,y,0,'牆壁'));
+  o.push(P('square','sky',10,51.5,63.5,0,'門窗'), P('square','brown',12,68.5,82,0,'門窗'));
+  o.push(P('loose','orange',14,95,22,0,'太陽')); around(8,95,22,11.8,-90,(x,y,a) => o.push(P('teardrop','yellow',8,x,y,a+90,'太陽')));
+  [18,28,38,82,92,102].forEach((x,i) => o.push(P('eye','green',8,x,95,i%2 ? 15 : -15,'小草')));
+  return o; }
+function bird(){
+  const o = [LN('brown',[6,84,60,92,114,76],'樹枝'), LN('brown',[56,79,56,83,55,87],'腳'), LN('brown',[64,79,64,83,65,87],'腳')];
+  o.push(P('eye','green',12,24,93,150,'葉子'), P('eye','green',12,90,93,210,'葉子'), P('eye','lgreen',12,104,72,25,'葉子'));
+  o.push(P('eye','blue',14,83,58,60,'尾巴'), P('eye','blue',14,84,66,80,'尾巴'));
+  o.push(P('teardrop','sky',26,61,66,90,'身體'), P('eye','blue',16,63,64,70,'翅膀'));
+  o.push(P('loose','sky',14,42,56,0,'頭'), P('triangle','orange',5,33.5,57,-90,'頭'), P('tight','black',3,40,54,0,'頭'));
+  return o; }
+function cupcake(){
+  const o = [];
+  [44,52,60,68,76].forEach((x,i) => o.push(P('eye','brown',14,x,83,(i-2)*-7,'杯子')));
+  [[40,66],[50,66],[60,66],[70,66],[80,66],[45,57],[55,57],[65,57],[75,57],[50,48],[60,48],[70,48]].forEach(([x,y]) => o.push(P('loose','pink',12,x,y,0,'奶油')));
+  o.push(LN('green',[60,33,62,26,68,21],'櫻桃'), P('loose','red',10,60,38,0,'櫻桃'));
+  [[45,60],[56,52],[72,62],[64,45],[52,64],[78,54]].forEach(([x,y],i) => o.push(P('tight', i%2 ? 'sky' : 'yellow', 4, x, y, 0, '彩色糖粒')));
+  return o; }
+function lantern(){
+  const o = [LN('gold',[60,4,60,16,60,28],'掛繩')];
+  [54,56,58,60,62,64,66].forEach((x,i) => o.push(LN('gold',[60,86,(60+x)/2,96,x,108],'流蘇')));
+  o.push(...pack(60,57,27,20,10.5,(x,y) => P('loose','red',12,x,y,0,'燈籠身體')));
+  for (const x of [50,60,70]){ o.push(P('square','gold',9,x,33,0,'上下金邊'), P('square','gold',9,x,81,0,'上下金邊')); }
+  o.push(P('tight','gold',6,60,87,0,'流蘇結'), P('scroll','gold',14,60,57,0,'中間花紋'));
+  return o; }
 const LESSONS = [
   {name:'棒棒糖', level:1, theme:'入門・一個大鬆捲', bg:'white', place:['棒子','糖果','蝴蝶結'], tip:'大鬆捲用比較長的紙條，兩條接起來時，接頭點一點膠對齊再繼續捲。',
    parts:[P('loose','red',26,60,40,0,'糖果'), LN('gold',[60,54,60,80,60,106],'棒子'), P('teardrop','pink',12,52.5,64,90,'蝴蝶結'), P('teardrop','pink',12,67.5,64,-90,'蝴蝶結'), P('tight','pink',5,60,64,0,'蝴蝶結')]},
@@ -679,8 +717,29 @@ const LESSONS = [
    marker:{name:'福字', text:'福', x:60, y:61, size:30, color:'#f6d36a'}, parts:fuCard()},
   {name:'孔雀', level:3, theme:'開屏・好多零件', bg:'cream', place:['尾羽','羽毛圓點','腳','身體'], tip:'尾羽像扇子一樣從中間往兩邊貼，最後才把身體蓋上去。', parts:peacock()},
   {name:'花束卡片', level:3, theme:'母親節・三種花', bg:'pink', place:['莖','葉子','紫色小花','粉紅小花','紅色小花','蝴蝶結'], tip:'三朵花用三種捲法，可以讓學員各選一朵負責，最後合成一張卡片。', parts:bouquet()},
-  {name:'小羊', level:3, theme:'生肖・羊年', bg:'mint', place:['腳','羊毛身體','頭和耳朵','瀏海和眼睛','小草'], tip:'羊毛的鬆捲一顆一顆緊緊靠在一起，擠一點沒關係，看起來更蓬鬆。', parts:sheep()}
+  {name:'小羊', level:3, theme:'生肖・羊年', bg:'mint', place:['腳','羊毛身體','頭和耳朵','瀏海和眼睛','小草'], tip:'羊毛的鬆捲一顆一顆緊緊靠在一起，擠一點沒關係，看起來更蓬鬆。', parts:sheep()},
+  {name:'櫻桃', level:1, theme:'水果・兩顆鬆捲', bg:'white', place:['梗','櫻桃','葉子','亮點'], tip:'兩顆櫻桃大小一樣，梗才會對稱；亮點用白色小緊捲點上去。',
+   parts:[LN('green',[44,69,50,45,62,26],'梗'), LN('green',[70,73,68,48,62,26],'梗'), P('loose','red',18,44,78,0,'櫻桃'), P('loose','red',18,70,82,0,'櫻桃'),
+          P('eye','green',16,71,22,70,'葉子'), P('tight','white',4,40,74,0,'亮點'), P('tight','white',4,66,78,0,'亮點')]},
+  {name:'小蝸牛', level:1, theme:'慢慢來・大鬆捲當殼', bg:'mint', place:['身體','殼','頭和觸角','小草'], tip:'蝸牛殼就是一個大鬆捲，捲的時候慢慢來，像蝸牛一樣。',
+   parts:[P('eye','lgreen',26,56,76,90,'身體'), P('loose','brown',26,62,55,0,'殼'), P('loose','lgreen',10,38,68,0,'頭和觸角'), P('vscroll','lgreen',10,37,58.5,-10,'頭和觸角'),
+          P('eye','green',8,20,98,-20,'小草'), P('eye','green',8,27,96,15,'小草'), P('eye','green',8,96,98,-15,'小草'), P('eye','green',8,103,96,20,'小草')]},
+  {name:'月亮星星', level:1, theme:'晚安・深藍卡紙', bg:'navy', place:['月亮','星星','小圓點'], tip:'星星用五個小眼睛形排成一圈，尖角朝外。',
+   parts:[P('halfmoon','gold',34,44,60,90,'月亮'), ...around(5,88,32,5.2,-90,(x,y,a) => P('eye','yellow',8,x,y,a+90,'星星')), ...around(5,86,84,5.2,-90,(x,y,a) => P('eye','yellow',8,x,y,a+90,'星星')),
+          ...[[24,22],[70,14],[104,58],[64,104],[20,96]].map(([x,y]) => P('tight','white',4,x,y,0,'小圓點'))]},
+  {name:'向日葵', level:2, theme:'夏天・花瓣朝外', bg:'sky', place:['莖','葉子','花瓣','花心'], tip:'花瓣尖角朝外、圓的那頭貼著花心，一片接一片繞一圈。',
+   parts:[LN('green',[60,53,58,82,60,112],'莖'), P('eye','green',18,48,88,-60,'葉子'), P('eye','green',18,72,80,60,'葉子'),
+          ...around(12,60,42,16.2,-90,(x,y,a) => P('teardrop','yellow',12,x,y,a+90,'花瓣')), P('loose','brown',18,60,42,0,'花心')]},
+  {name:'金魚', level:2, theme:'水族箱・水滴形魚身', bg:'sky', place:['水草','尾巴','魚鰭','身體','眼睛','泡泡'], tip:'魚身是大水滴，尖角朝尾巴；泡泡由小到大往上排。', parts:goldfish()},
+  {name:'小房子', level:2, theme:'我的家・方形和三角形', bg:'cream', place:['牆壁','屋頂','門窗','太陽','小草'], tip:'四個方形先排成田字，再把三角形屋頂蓋上去。', parts:house()},
+  {name:'小鳥', level:3, theme:'樹枝上的鳥・好多捲法', bg:'mint', place:['樹枝','葉子','腳','尾巴','身體','翅膀','頭'], tip:'先貼樹枝和腳，小鳥的身體再站上去，看起來就像停在樹枝上。', parts:bird()},
+  {name:'杯子蛋糕', level:3, theme:'慶生・鬆捲奶油', bg:'pink', place:['杯子','奶油','櫻桃','彩色糖粒'], tip:'奶油的鬆捲從最下面一排往上疊，越上面越少。', parts:cupcake()},
+  {name:'紅燈籠', level:3, theme:'元宵・紅色鬆捲', bg:'cream', place:['掛繩','流蘇','燈籠身體','上下金邊','流蘇結','中間花紋'], tip:'燈籠身體的鬆捲緊緊靠在一起，像蜂巢一樣排。', parts:lantern()}
 ];
+const ORDER = ['棒棒糖','櫻桃','小花','月亮星星','葉子枝條','小蝸牛','愛心', '氣球','向日葵','蝴蝶','金魚','小房子','雪花','聖誕樹', '小鳥','福字小卡','杯子蛋糕','孔雀','紅燈籠','花束卡片','小羊'];
+LESSONS.sort((a,b) => ORDER.indexOf(a.name) - ORDER.indexOf(b.name));
+const NL = LESSONS.length;
+
 const stars = n => '★'.repeat(n) + '☆'.repeat(3-n);
 
 /* ---------- 把一課整理成：零件組、製作步驟、擺放區 ---------- */
@@ -1299,7 +1358,7 @@ async function makeCover(){
   c.font = `${16*MM}px ${DISPLAY}`; c.textBaseline = 'alphabetic';
   let x = 18*MM; [...'衍紙'].forEach((ch,i) => { c.save(); c.translate(x, 40*MM); c.rotate([-.06,.04][i]); c.fillStyle = CUTE[i]; c.fillText(ch,0,0); c.restore(); x += c.measureText(ch).width + 1*MM; });
   c.fillStyle = '#7a625d'; c.font = `${9*MM}px ${DISPLAY}`; c.fillText('・捲紙教案', x, 39*MM);
-  c.fillStyle = '#3b2b2b'; c.font = `${7*MM}px ${DISPLAY}`; c.fillText('10 種基本捲法＋12 課 A4 底稿', 18*MM, 53*MM);
+  c.fillStyle = '#3b2b2b'; c.font = `${7*MM}px ${DISPLAY}`; c.fillText('10 種基本捲法＋21 課 A4 底稿', 18*MM, 53*MM);
   c.font = `500 ${3.5*MM}px ${FONT}`; c.fillStyle = '#7a625d';
   c.fillText('每課一頁：實際大小底稿、零件清單（形狀・顏色・紙條長度・數量）、步驟。列印選「實際大小 100%」。', 18*MM, 61*MM);
   // 基本捲法
@@ -1309,19 +1368,19 @@ async function makeCover(){
     drawIcon(c, k, COLORS[BASIC_COL[k]].h, cx, cy, 6.5*MM);
     c.fillStyle = '#3b2b2b'; c.font = `${3.6*MM}px ${DISPLAY}`; c.textAlign = 'center'; c.fillText(SHAPES[k].n, cx, cy + 10.5*MM); c.textAlign = 'left'; });
   // 12 課
-  const imgs = $$('.card.les img'), cw = 28*MM, ch = 37*MM, gx = 15*MM, gy = 123*MM, gap = 2.4*MM;
-  LESSONS.forEach((les, i) => { const X = gx + (i%6)*(cw+gap), Y = gy + Math.floor(i/6)*(ch+gap);
-    roundRect(c, X, Y, cw, ch, 3*MM, '#fff', '#f1d8c6'); roundRect(c, X+1.5*MM, Y+1.5*MM, cw-3*MM, cw-3*MM, 2.5*MM, '#3b82c4');
-    const im = cw-7*MM; if (imgs[i] && imgs[i].complete && imgs[i].naturalWidth) c.drawImage(imgs[i], X+3.5*MM, Y+3.5*MM, im, im);
-    c.fillStyle = '#3b2b2b'; c.font = `${3.5*MM}px ${DISPLAY}`; c.fillText(`${i+1}. ${les.name}`, X+2*MM, Y+cw+2.6*MM);
-    c.fillStyle = '#f2a900'; c.font = `${2.8*MM}px ${DISPLAY}`; c.fillText(stars(les.level), X+2*MM, Y+cw+6.6*MM); });
-  c.fillStyle = '#3b2b2b'; c.font = `${4.6*MM}px ${DISPLAY}`; c.fillText('給帶領者', 18*MM, 214*MM);
+  const imgs = $$('.card.les img'), cw = 24*MM, ch = 31*MM, gx = 15*MM, gy = 122*MM, gap = 2*MM;
+  LESSONS.forEach((les, i) => { const X = gx + (i%7)*(cw+gap), Y = gy + Math.floor(i/7)*(ch+gap);
+    roundRect(c, X, Y, cw, ch, 3*MM, '#fff', '#f1d8c6'); roundRect(c, X+1.2*MM, Y+1.2*MM, cw-2.4*MM, cw-2.4*MM, 2.5*MM, '#3b82c4');
+    const im = cw-6*MM; if (imgs[i] && imgs[i].complete && imgs[i].naturalWidth) c.drawImage(imgs[i], X+3*MM, Y+3*MM, im, im);
+    c.fillStyle = '#3b2b2b'; c.font = `${3.1*MM}px ${DISPLAY}`; c.fillText(`${i+1}. ${les.name}`, X+1.6*MM, Y+cw+2.6*MM);
+    c.fillStyle = '#f2a900'; c.font = `${2.6*MM}px ${DISPLAY}`; c.fillText(stars(les.level), X+1.6*MM, Y+cw+6*MM); });
+  c.fillStyle = '#3b2b2b'; c.font = `${4.6*MM}px ${DISPLAY}`; c.fillText('給帶領者', 18*MM, 227*MM);
   c.font = `500 ${3.6*MM}px ${FONT}`; c.fillStyle = '#5f4c47';
   ['練到：捏力與手指靈巧度（捏紙條、轉捲紙筆、捏尖角）、雙手協調（一手轉、一手扶）、手眼協調（照字母擺放）、注意力持續（同一種零件重複做）。',
    '長者調整：用 5 公釐或 10 公釐寬、厚一點的紙條；捲紙筆握柄套海綿加粗，或改用牙籤、竹筷；捏力弱的學員先由帶領者捲好，他負責放開、捏形和擺放。',
-   '節奏：一次只做一種零件，做完數一數再換；每 15–20 分鐘動動手指休息。★ 第 1–4 課零件少；★★ 第 5–8 課開始對稱排列；★★★ 第 9–12 課零件 20 個以上，可分兩次完成。',
+   '節奏：一次只做一種零件，做完數一數再換；每 15–20 分鐘動動手指休息。★ 第 1–7 課零件少；★★ 第 8–14 課開始對稱排列；★★★ 第 15–21 課零件多，可分兩次完成。',
    '安全：捲紙筆尖端是金屬，用完收好；緊捲、小圓點很小，失智學員注意不要放進嘴巴。'].reduce((yy, t) => {
-     const ls = wrapText(c, t, 174*MM); ls.forEach((l,j) => c.fillText(l, 18*MM, yy + j*5*MM)); return yy + ls.length*5*MM + 2*MM; }, 222*MM);
+     const ls = wrapText(c, t, 174*MM); ls.forEach((l,j) => c.fillText(l, 18*MM, yy + j*4.6*MM)); return yy + ls.length*4.6*MM + 1.4*MM; }, 234*MM);
   c.fillStyle = '#b09a94'; c.font = `500 ${3.5*MM}px ${FONT}`; c.textAlign = 'right'; c.fillText('衍紙・捲紙教案', 192*MM, 292*MM);
   return cv;
 }
@@ -1399,7 +1458,7 @@ let thumbsReady;
     b.onclick = () => { if (recording) return; loadBasic(k); window.scrollTo({top:0, behavior: reduced ? 'auto' : 'smooth'}); };
     bg.querySelector('.cards').appendChild(b); });
   lib.appendChild(bg);
-  for (const [lv,label,from,to] of [[1,'★ 入門',1,4],[2,'★★ 進階',5,8],[3,'★★★ 挑戰',9,12]]){
+  for (const [lv,label,from,to] of [[1,'★ 入門',1,7],[2,'★★ 進階',8,14],[3,'★★★ 挑戰',15,21]]){
     const g = document.createElement('div'); g.className = 'lib-group';
     g.innerHTML = `<h3>${label}・第 ${from}–${to} 課</h3><div class="cards"></div>`;
     LESSONS.forEach((les, i) => { if (les.level !== lv) return;
@@ -1430,7 +1489,7 @@ $('#replayStep').onclick = () => runStep(S.step);
 $('#autoPlay').onclick = async () => { if (!steps.length) return; cancelAnim(); const tok = ++animToken; busy = true; updateUI(); await playAll(tok, false); if (tok === animToken){ busy = false; updateUI(); render(); } };
 const fileBase = () => S.lesson < 0 ? curLes().name : `第${S.lesson+1}課_${curLes().name}`;
 $('#a4One').onclick = () => buildPdf([{les:curLes(), no:S.lesson < 0 ? 0 : S.lesson+1}], false, `衍紙底稿_${fileBase()}.pdf`);
-$('#a4All').onclick = $('#a4All2').onclick = () => buildPdf(LESSONS.map((les,i) => ({les, no:i+1})), true, '衍紙捲紙教案_12課A4底稿.pdf');
+$('#a4All').onclick = $('#a4All2').onclick = () => buildPdf(LESSONS.map((les,i) => ({les, no:i+1})), true, '衍紙捲紙教案_21課A4底稿.pdf');
 $('#lRecord').onclick = () => { if (!steps.length) return; recordWith(tok => playAll(tok, true), S.mode === 'basic' ? `衍紙基本功_${SHAPES[S.kind].n}` : `衍紙教學_${fileBase()}`); };
 $('#backDesign').onclick = () => setMode('design');
 const playCustom = () => { if (!DS.parts.length){ toast('還沒有任何零件，先在卡紙上點幾下放零件吧'); return false; }
@@ -1546,7 +1605,7 @@ function updateUI(){
       $('#lMeta').innerHTML = `<span class="chip">紙條 ${stripLen(S.kind, d)} 公分</span><span class="chip">${SHAPES[S.kind].open ? '寬' : '直徑'} ${d} 公釐</span><span class="chip">${SHAPES[S.kind].use}</span>`;
       $$('#shapeGrid button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === S.kind)));
     } else {
-      $('#lNum').textContent = custom ? '自己設計' : `第 ${S.lesson+1} 課・共 12 課`;
+      $('#lNum').textContent = custom ? '自己設計' : `第 ${S.lesson+1} 課・共 ${NL} 課`;
       $('#lName').textContent = les.name;
       $('#lMeta').innerHTML = (les.level ? `<span class="chip"><span class="stars">${stars(les.level)}</span></span>` : '') + `<span class="chip">${les.parts.length} 個零件</span><span class="chip"><i style="background:${CARDS[les.bg].h}"></i>${CARDS[les.bg].n}卡紙</span><span class="chip">${les.theme}</span>`;
       $('#lKey').innerHTML = LD ? LD.groups.map(g => `<span class="chip"><b>${g.code}</b><i style="background:${COLORS[g.c].h}"></i>${groupName(g)} × ${g.n}</span>`).join('') : '';
